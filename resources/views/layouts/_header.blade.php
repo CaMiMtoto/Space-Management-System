@@ -89,25 +89,7 @@
                             </div>
                         </div>
                         <!--end::Menu item-->
-                        <!--begin::Menu separator-->
-                        <div class="separator my-2"></div>
-                        <!--end::Menu separator-->
-                        <!--begin::Menu item-->
-                        <div class="menu-item px-5">
-                            <a href="" class="menu-link px-5">My Profile</a>
-                        </div>
-                        <!--end::Menu item-->
-                        <!--begin::Menu item-->
-                        <div class="menu-item px-5">
-                            <a href="" class="menu-link px-5">
-                                <span class="menu-text">My Projects</span>
-                                <span class="menu-badge">
-												<span
-                                                    class="badge badge-light-danger badge-circle fw-bold fs-7">3</span>
-											</span>
-                            </a>
-                        </div>
-                        <!--end::Menu item-->
+
 
                         <!--end::Menu item-->
                         <!--begin::Menu separator-->
@@ -145,20 +127,9 @@
                                 <div class="menu-item px-3 my-0">
                                     <a href="#" class="menu-link px-3 py-2" data-kt-element="mode"
                                        data-kt-value="light">
-													<span class="menu-icon" data-kt-element="icon">
-														<svg xmlns="http://www.w3.org/2000/svg"
-                                                             class="icon icon-tabler icon-tabler-brightness-up"
-                                                             width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                             stroke="currentColor" fill="none" stroke-linecap="round"
-                                                             stroke-linejoin="round"><path stroke="none"
-                                                                                           d="M0 0h24v24H0z"
-                                                                                           fill="none"/><path
-                                                                d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path
-                                                                d="M12 5l0 -2"/><path d="M17 7l1.4 -1.4"/><path
-                                                                d="M19 12l2 0"/><path d="M17 17l1.4 1.4"/><path
-                                                                d="M12 19l0 2"/><path d="M7 17l-1.4 1.4"/><path
-                                                                d="M6 12l-2 0"/><path d="M7 7l-1.4 -1.4"/></svg>
-													</span>
+                                        <span class="menu-icon" data-kt-element="icon">
+                                            <x-lucide-sun class="tw-h-6 tw-w-6"/>
+                                        </span>
                                         <span class="menu-title">Light</span>
                                     </a>
                                 </div>
@@ -167,16 +138,9 @@
                                 <div class="menu-item px-3 my-0">
                                     <a href="#" class="menu-link px-3 py-2" data-kt-element="mode"
                                        data-kt-value="dark">
-													<span class="menu-icon" data-kt-element="icon">
-													<svg xmlns="http://www.w3.org/2000/svg"
-                                                         class="icon icon-tabler icon-tabler-moon-filled" width="24"
-                                                         height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                         stroke="currentColor" fill="none" stroke-linecap="round"
-                                                         stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"
-                                                                                       fill="none"/><path
-                                                            d="M12 1.992a10 10 0 1 0 9.236 13.838c.341 -.82 -.476 -1.644 -1.298 -1.31a6.5 6.5 0 0 1 -6.864 -10.787l.077 -.08c.551 -.63 .113 -1.653 -.758 -1.653h-.266l-.068 -.006l-.06 -.002z"
-                                                            stroke-width="0" fill="currentColor"/></svg>
-													</span>
+                                        <span class="menu-icon" data-kt-element="icon">
+                                          <x-lucide-moon class="tw-h-6 tw-w-6"/>
+                                        </span>
                                         <span class="menu-title">Dark</span>
                                     </a>
                                 </div>
@@ -185,18 +149,9 @@
                                 <div class="menu-item px-3 my-0">
                                     <a href="#" class="menu-link px-3 py-2" data-kt-element="mode"
                                        data-kt-value="system">
-													<span class="menu-icon" data-kt-element="icon">
-													<svg xmlns="http://www.w3.org/2000/svg"
-                                                         class="icon icon-tabler icon-tabler-brightness" width="24"
-                                                         height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                         stroke="currentColor" fill="none" stroke-linecap="round"
-                                                         stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"
-                                                                                       fill="none"/><path
-                                                            d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"/><path
-                                                            d="M12 3l0 18"/><path d="M12 9l4.65 -4.65"/><path
-                                                            d="M12 14.3l7.37 -7.37"/><path
-                                                            d="M12 19.6l8.85 -8.85"/></svg>
-													</span>
+                                        <span class="menu-icon" data-kt-element="icon">
+                                            <x-lucide-sun-moon class="tw-h-6 tw-w-6"/>
+                                        </span>
                                         <span class="menu-title">System</span>
                                     </a>
                                 </div>
@@ -206,11 +161,7 @@
                         </div>
                         <!--end::Menu item-->
 
-                        <!--begin::Menu item-->
-                        <div class="menu-item px-5 my-1">
-                            <a href="" class="menu-link px-5">Account Settings</a>
-                        </div>
-                        <!--end::Menu item-->
+
                         <!--begin::Menu item-->
                         <div class="menu-item px-5">
                             <form method="POST" action="{{ route('logout') }}">
