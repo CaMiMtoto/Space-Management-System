@@ -108,6 +108,7 @@ Route::group(['middleware' => ['auth', PasswordChanged::class, EnsureUserIsActiv
         Route::get('/popular-rooms', [RoomReportsController::class, 'popularRooms'])->name('reports.popular-rooms');
 
         Route::get('/booking', [BookingReportController::class, 'index'])->name('reports.booking');
+        Route::get('/booking/export',[BookingReportController::class,'exportToExcel'])->name('booking.export');
     });
 
 

@@ -48,10 +48,10 @@
                 <button type="button" class="btn btn-light border btn-sm" id="clear-filters">
                     Clear Filters
                 </button>
-                {{--   <a href="" class="btn btn-success btn-sm">
+                   <a href="{{ route('admin.booking.export') }}" class="btn btn-success btn-sm js-export">
                        Export
                        <x-lucide-cloud-download class="ms-2 tw-h-5 tw-w-5"/>
-                   </a>--}}
+                   </a>
             </div>
             <!--end::Actions-->
         </div>
@@ -195,6 +195,16 @@
                 // change url to reload data
                 window.history.replaceState({}, '', '{!! route('admin.reports.booking') !!}');
             });
+
+            $('.js-export').on('click', function (e) {
+                e.preventDefault();
+                window.location.href = '{!! route('admin.booking.export') !!}' +
+                    '?start_date=' + $('#start_date').val() +
+                    '&end_date=' + $('#end_date').val() +
+                    '&room_type=' + $('#room_type').val() +
+                    '&status=' + $('#status').val();
+            });
+
         });
     </script>
 @endpush
