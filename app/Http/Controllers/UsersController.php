@@ -33,22 +33,7 @@ class UsersController extends Controller
         if (\request()->ajax()) {
             return datatables()->of(User::select('*'))
                 ->addColumn('action', function (User $user) {
-                    // delete button
-                    $deleteBtn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $user->id . '" data-original-title="Delete" class="dropdown-item js-delete">Delete</a>';
-                    // edit button
-                    $editBtn = '<a href="' . route("admin.system.users.show", $user->id) . '" data-toggle="tooltip"  data-id="' . $user->id . '" data-original-title="Edit" class="dropdown-item js-edit">Edit</a>';
-                    // roles button
-                    $rolesBtn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $user->id . '" data-original-title="Roles" class="dropdown-item rolesUser">Roles</a>';
-                    return "<div class='drop-down dropdown-action'>
-                                <a href='#' class='dropdown-toggle' data-bs-toggle='dropdown' aria-expanded='false'>
-                                    <i class='bi bi-three-dots-vertical'></i>
-                                </a>
-                                <ul class='dropdown-menu dropdown-menu-right'>
-                                    <li>$editBtn</li>
-                                    <li>$deleteBtn</li>
-                                </ul>
-                            </div>";
-
+                    return view('admin.users.action', compact('user'));
                 })
                 ->rawColumns(['action'])
                 ->addIndexColumn()
@@ -89,11 +74,10 @@ class UsersController extends Controller
 
         $user->roles()->sync($request->input('roles'));
 
-        DB::commit();
         if (!$id || $id == 0) {
             $user->notify(new UserCreated($user, $random));
         }
-
+        DB::commit();
         return response()->json([
             'message' => 'User saved successfully',
             'user' => $user,

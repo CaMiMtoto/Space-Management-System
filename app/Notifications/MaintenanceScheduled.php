@@ -10,7 +10,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use function Pest\Laravel\json;
 
-class MaintenanceScheduled extends Notification
+class MaintenanceScheduled extends Notification implements ShouldQueue
 {
     use Queueable;
 

@@ -3,12 +3,13 @@
 use App\Http\Controllers\BookingReportController;
 use App\Http\Controllers\RoomReportsController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Middleware\EnsureUserIsActive;
 use App\Http\Middleware\PasswordChanged;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/test-email', function () {
-    \Mail::raw('This is a test email', function ($message) {
+    Mail::raw('This is a test email', function ($message) {
         $message->to('your-email@example.com')
             ->subject('Test Email');
     });
@@ -29,7 +30,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/bookings/{booking}', [App\Http\Controllers\BookingController::class, 'show'])->name('admin.bookings.show');
 
-Route::group(['middleware' => ['auth', PasswordChanged::class], 'prefix' => '/admin', 'as' => 'admin.'], function () {
+Route::group(['middleware' => ['auth', PasswordChanged::class, EnsureUserIsActive::class], 'prefix' => '/admin', 'as' => 'admin.'], function () {
 
     Route::get('/appointments', [App\Http\Controllers\AppointmentBookingController::class, 'index'])->name('appointments.index');
     Route::post('/appointments/{booking}/review', [App\Http\Controllers\AppointmentBookingController::class, 'review'])->name('appointments.review');

@@ -9,7 +9,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use phpDocumentor\Reflection\Types\This;
 
-class UserCreated extends Notification
+class UserCreated extends Notification implements ShouldQueue
 {
     use Queueable;
 

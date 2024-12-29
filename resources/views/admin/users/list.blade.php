@@ -254,6 +254,42 @@
                     }
                 });
             });
+
+            $(document).on('click','.js-toggle-active',function (e) {
+               e.preventDefault();
+               let url = $(this).attr('href');
+               let isActive = $(this).data('is_active');
+               let msg = isActive === 1 ? 'deactivate' : 'activate';
+
+               Swal.fire({
+                   title: 'Are you sure?',
+                   text:  'You want to ' + msg + ' this user?',
+                   icon: 'warning',
+                   showCancelButton: true,
+                   confirmButtonText: 'Yes, do it!',
+                   cancelButtonText: 'No, cancel!',
+                   reverseButtons: true
+               }).then(function (result) {
+                   if (result.isConfirmed) {
+                       $.ajax({
+                           url: url,
+                           type: 'POST',
+                           data: {
+                               _token: '{{ csrf_token() }}'
+                           },
+                           success: function (data) {
+                               myTable.ajax.reload();
+                               Swal.fire({
+                                   icon: 'success',
+                                   title: 'Success!',
+                                   text: 'User has been ' + msg + 'd successfully.',
+                               });
+                           }
+                       });
+                   }
+               });
+
+            });
         });
     </script>
 @endpush
