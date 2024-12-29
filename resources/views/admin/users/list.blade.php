@@ -41,10 +41,16 @@
                 </div>
                 <!--end::Page title-->
                 <!--begin::Actions-->
-                <button type="button" class="btn btn-sm btn-light-primary px-4 py-3" id="addBtn">
-                    <i class="bi bi-plus fs-3"></i>
-                    Add New
-                </button>
+                <div>
+                    <button type="button" class="btn btn-sm btn-success px-4 py-3" id="importBtn">
+                        <x-lucide-import class="tw-w-5 tw-h-5"/>
+                        Import Users
+                    </button>
+                    <button type="button" class="btn btn-sm btn-light-primary px-4 py-3" id="addBtn">
+                        <i class="bi bi-plus fs-3"></i>
+                        Add New
+                    </button>
+                </div>
                 <!--end::Actions-->
             </div>
         </div>
@@ -55,6 +61,7 @@
                 <table class="table ps-2 align-middle border rounded table-row-dashed fs-6 g-5" id="myTable">
                     <thead>
                     <tr class="text-start text-gray-800 fw-bold fs-7 text-uppercase">
+                        <th>Created At</th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Phone</th>
@@ -136,6 +143,51 @@
         </div>
     </div>
 
+{{--    Import modal--}}
+
+    <div class="modal fade" tabindex="-1" id="importModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">
+                        Import Users
+                    </h3>
+
+                    <!--begin::Close-->
+                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal"
+                         aria-label="Close">
+                        <i class="bi bi-x"></i>
+                    </div>
+                    <!--end::Close-->
+                </div>
+
+                <form action="{{ route('admin.system.users.import') }}" id="importForm" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+
+                        <div class="alert alert-info">
+                            <p>
+                                Please download the sample file and fill in the required information. Once you have filled in the information, upload the file here.
+                            </p>
+                            <a href="{{ asset('assets/templates/user_template.xlsx') }}" target="_blank" class="btn btn-primary">Download Template</a>
+                        </div>
+                        <div class="mb-3">
+                            <label for="file">File</label>
+                            <input type="file" class="form-control" id="file" name="file" placeholder=""/>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                        <button type="button" class="btn bg-secondary text-light-emphasis" data-bs-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @push('scripts')
@@ -150,6 +202,11 @@
                     processing: '<div class="spinner spinner-primary spinner-lg mr-15"></div> Processing...'
                 },
                 columns: [
+                    {data: 'created_at', name: 'created_at',
+                        render: function (data) {
+                            return moment(data).format('DD-MM-YYYY');
+                        }
+                    },
                     {data: 'name', name: 'name'},
                     {data: 'email', name: 'email'},
                     {data: 'phone_number', name: 'phone_number'},
@@ -173,6 +230,7 @@
                         width: '15%'
                     },
                 ],
+                order: [[0, 'desc']]
             });
 
             $('#addBtn').click(function () {
@@ -255,41 +313,46 @@
                 });
             });
 
-            $(document).on('click','.js-toggle-active',function (e) {
-               e.preventDefault();
-               let url = $(this).attr('href');
-               let isActive = $(this).data('is_active');
-               let msg = isActive === 1 ? 'deactivate' : 'activate';
+            $(document).on('click', '.js-toggle-active', function (e) {
+                e.preventDefault();
+                let url = $(this).attr('href');
+                let isActive = $(this).data('is_active');
+                let msg = isActive === 1 ? 'deactivate' : 'activate';
 
-               Swal.fire({
-                   title: 'Are you sure?',
-                   text:  'You want to ' + msg + ' this user?',
-                   icon: 'warning',
-                   showCancelButton: true,
-                   confirmButtonText: 'Yes, do it!',
-                   cancelButtonText: 'No, cancel!',
-                   reverseButtons: true
-               }).then(function (result) {
-                   if (result.isConfirmed) {
-                       $.ajax({
-                           url: url,
-                           type: 'POST',
-                           data: {
-                               _token: '{{ csrf_token() }}'
-                           },
-                           success: function (data) {
-                               myTable.ajax.reload();
-                               Swal.fire({
-                                   icon: 'success',
-                                   title: 'Success!',
-                                   text: 'User has been ' + msg + 'd successfully.',
-                               });
-                           }
-                       });
-                   }
-               });
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'You want to ' + msg + ' this user?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, do it!',
+                    cancelButtonText: 'No, cancel!',
+                    reverseButtons: true
+                }).then(function (result) {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: url,
+                            type: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function (data) {
+                                myTable.ajax.reload();
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success!',
+                                    text: 'User has been ' + msg + 'd successfully.',
+                                });
+                            }
+                        });
+                    }
+                });
 
             });
+
+            $('#importBtn').click(function () {
+                $('#importModal').modal('show');
+            });
+
         });
     </script>
 @endpush

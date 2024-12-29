@@ -3,6 +3,7 @@
 use App\Http\Controllers\BookingReportController;
 use App\Http\Controllers\RoomReportsController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\UsersController;
 use App\Http\Middleware\EnsureUserIsActive;
 use App\Http\Middleware\PasswordChanged;
 use Illuminate\Support\Facades\Auth;
@@ -64,7 +65,7 @@ Route::group(['middleware' => ['auth', PasswordChanged::class, EnsureUserIsActiv
         Route::post('/users/{user}/toggle-activate', [App\Http\Controllers\UsersController::class, 'toggleActive'])->name('users.active-toggle');
         Route::delete('/users/{user}', [App\Http\Controllers\UsersController::class, 'destroy'])->name('users.destroy');
         Route::get('/users/{user}', [App\Http\Controllers\UsersController::class, 'show'])->name('users.show');
-
+        Route::post('/users/import', [UsersController::class, 'import'])->name('users.import');
         Route::get('/permissions', [App\Http\Controllers\PermissionsController::class, 'index'])->name('permissions.index');
 
     });
@@ -108,7 +109,7 @@ Route::group(['middleware' => ['auth', PasswordChanged::class, EnsureUserIsActiv
         Route::get('/popular-rooms', [RoomReportsController::class, 'popularRooms'])->name('reports.popular-rooms');
 
         Route::get('/booking', [BookingReportController::class, 'index'])->name('reports.booking');
-        Route::get('/booking/export',[BookingReportController::class,'exportToExcel'])->name('booking.export');
+        Route::get('/booking/export', [BookingReportController::class, 'exportToExcel'])->name('booking.export');
     });
 
 
