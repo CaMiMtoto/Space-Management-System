@@ -42,7 +42,7 @@ class UserCreated extends Notification implements ShouldQueue
             ->line('You have been registered to the ' . config('app.name') . '!')
             ->line('Your email is:' . $this->user->email)
             ->line('Your password is: ' . $this->random)
-            ->line('Please reset your password before logging in. otherwise you will not be able to login.')
+            ->line('Please click "forgot password" to change your password')
             ->action('Login', route('login'))
             ->line('Thank you for using our application!')
             ->salutation('Regards, ' . config('app.name'));

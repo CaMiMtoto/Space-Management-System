@@ -7,18 +7,11 @@ use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Artisan;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+
 
     /**
      * Show the application dashboard.
@@ -33,5 +26,15 @@ class HomeController extends Controller
     public function dashboard()
     {
         return view('admin.dashboard');
+    }
+
+    public function clearCache()
+    {
+        Artisan::call('config:clear');
+        Artisan::call('cache:clear');
+        Artisan::call('route:clear');
+        Artisan::call('view:clear');
+        Artisan::call('config:cache');
+        return "Cache is cleared";
     }
 }

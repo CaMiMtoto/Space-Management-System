@@ -9,9 +9,10 @@ use App\Http\Middleware\PasswordChanged;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/clear-cache', [App\Http\Controllers\HomeController::class, 'clearCache'])->name('clear-cache');
 Route::get('/test-email', function () {
     Mail::raw('This is a test email', function ($message) {
-        $message->to('your-email@example.com')
+        $message->to('jeanpaulcami@live.com')
             ->subject('Test Email');
     });
 
