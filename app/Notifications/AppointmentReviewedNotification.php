@@ -14,13 +14,15 @@ class AppointmentReviewedNotification extends Notification implements ShouldQueu
     use Queueable;
 
     protected AppointmentBooking $appointmentBooking;
+    protected string $url;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(AppointmentBooking $appointmentBooking)
+    public function __construct(AppointmentBooking $appointmentBooking , string $url)
     {
         $this->appointmentBooking = $appointmentBooking;
+        $this->url = $url;
     }
 
     /**
@@ -49,6 +51,7 @@ class AppointmentReviewedNotification extends Notification implements ShouldQueu
                 ->line('Contact Person: ' . $this->appointmentBooking->contact_person_name)
                 ->line('Contact Number: ' . $this->appointmentBooking->contact_person_phone)
                 ->line('Contact Email: ' . $this->appointmentBooking->contact_person_email)
+                ->action('View Appointment Details', $this->url)
                 ->line('Thank you !.');
         }
         return (new MailMessage)
@@ -56,6 +59,7 @@ class AppointmentReviewedNotification extends Notification implements ShouldQueu
             ->greeting('Hello!' . $this->appointmentBooking->name)
             ->line('Your appointment has been reviewed.')
             ->line('Unfortunately, your appointment has been rejected.')
+            ->action('View Appointment Details', $this->url)
             ->line('If you have any questions, please contact us.')
             ->line('Thank you !.');
     }

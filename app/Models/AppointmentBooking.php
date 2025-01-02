@@ -4,13 +4,14 @@ namespace App\Models;
 
 use App\Constants\Permission;
 use App\Constants\Status;
+use App\Traits\HasEncodedId;
 use App\Traits\HasStatusColor;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class AppointmentBooking extends Model
 {
-    use HasStatusColor;
+    use HasStatusColor,HasEncodedId;
     protected $appends = ['status_color'];
     protected $casts = [
         'date' => 'datetime'

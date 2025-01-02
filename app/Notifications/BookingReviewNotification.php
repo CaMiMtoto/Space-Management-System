@@ -14,16 +14,16 @@ class BookingReviewNotification extends Notification implements ShouldQueue
     use Queueable;
 
     protected Booking $booking;
-
+    protected string $url;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(Booking $booking)
+    public function __construct(Booking $booking, string $url)
     {
         $this->booking = $booking;
+        $this->url = $url;
     }
-
     /**
      * Get the notification's delivery channels.
      *
@@ -31,7 +31,7 @@ class BookingReviewNotification extends Notification implements ShouldQueue
      */
     public function via(object $notifiable): array
     {
-        return ['mail','database'];
+        return ['mail'];
     }
 
     /**
@@ -63,6 +63,7 @@ class BookingReviewNotification extends Notification implements ShouldQueue
             ->subject($subject)
             ->greeting($line1)
             ->line($line2)
+            ->action('View Booking Details', $this->url)
             ->line($line3)
             ->line($line4);
     }

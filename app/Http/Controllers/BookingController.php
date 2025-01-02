@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Constants\Status;
 use App\Http\Requests\ValidateStoreBookingRequest;
 use App\Models\Booking;
+use App\Models\Guest;
 use App\Models\Room;
 use App\Models\RoomType;
 use App\Models\User;
@@ -14,6 +15,7 @@ use App\Services\InvoiceService;
 use DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\Notifiable;
 use Throwable;
 use Yajra\DataTables\Exceptions\Exception;
 
@@ -33,6 +35,9 @@ class BookingController extends Controller
             $data = Booking::query()
                 ->when(\request('type') != 'all', function (Builder $query) use ($userId) {
                     $query->where('user_id', $userId);
+                })
+                ->when(\request('status'), function (Builder $query) {
+                    $query->where('status', \request('status'));
                 })
                 ->with('room.roomType', 'room.building', 'user', 'room.maintenances')
                 ->select('bookings.*');
@@ -86,12 +91,7 @@ class BookingController extends Controller
         ]);
         // for guest booking , send email to guest
         if ($booking->is_guest_booking) {
-            // make a temporary user object for email notification
-            $user = User::make([
-                'name' => $booking->guest_name,
-                'email' => $booking->guest_email,
-                'phone_number' => $booking->guest_phone,
-            ]);
+            $user = $this->makeGuestUser($booking);
             $bookingUrl = route('admin.bookings.show', encodeId($booking->id));
             $user->notify(new BookingCreatedNotification($booking, $bookingUrl));
         }
@@ -206,16 +206,11 @@ class BookingController extends Controller
 
         // if booking is for guest, notify the guest email
         if ($booking->is_guest_booking) {
-            // make a temporary user object for email notification
-            $user = User::make([
-                'name' => $booking->guest_name,
-                'email' => $booking->guest_email,
-                'phone_number' => $booking->guest_phone,
-            ]);
+            $user = $this->makeGuestUser($booking);
         } else {
             $user = User::find($booking->user_id);
         }
-        $user->notify(new BookingReviewNotification($booking));
+        $user->notify(new BookingReviewNotification($booking,route('admin.bookings.show', encodeId($booking->id))));
         if ($data['status'] == Status::Approved) {
             // Generate invoice after booking approval
             $invoiceService = new InvoiceService();
@@ -235,6 +230,12 @@ class BookingController extends Controller
     public function searchBooking()
     {
         return view('search-booking');
+    }
+
+
+    public function makeGuestUser(Booking $booking)
+    {
+        return new Guest($booking->guest_name, $booking->guest_email, $booking->guest_phone);
     }
 
 

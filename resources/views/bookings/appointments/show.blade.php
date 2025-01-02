@@ -128,7 +128,7 @@
                             provide a
                             reason for the status.
                         </p>
-                        <form action="{{ route('admin.appointments.review', $appointmentBooking->id) }}" method="POST"
+                        <form action="{{ route('admin.appointments.review', encodeId($appointmentBooking->id)) }}" method="POST"
                               id="review-form">
                             @csrf
                             <div class="row">

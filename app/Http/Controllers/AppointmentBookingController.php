@@ -5,12 +5,11 @@ namespace App\Http\Controllers;
 use App\Constants\Status;
 use App\Http\Requests\ValidateAppointnetRequest;
 use App\Jobs\SendAppointmentBookingEmailJob;
+use App\Jobs\SendEmailJob;
 use App\Models\AppointmentBooking;
-use App\Models\Booking;
-use App\Models\User;
+use App\Models\EmailLink;
+use App\Models\Guest;
 use App\Notifications\AppointmentReviewedNotification;
-use App\Notifications\BookingReviewNotification;
-use App\Services\InvoiceService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -26,8 +25,7 @@ class AppointmentBookingController extends Controller
             $data = AppointmentBooking::query();
             return Datatables::of($data)
                 ->addColumn('action', function ($row) {
-                    $btn = '<a href="' . route('appointments.show', $row->id) . '" class="edit btn btn-primary btn-sm">View</a>';
-                    return $btn;
+                    return '<a href="' . route('appointments.show',encodeId( $row->id)) . '" class="edit btn btn-primary btn-sm">View</a>';
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -100,9 +98,9 @@ class AppointmentBookingController extends Controller
             'status' => $data['status'],
             'reviewed_at' => now(),
             'reviewed_by_id' => auth()->id(),
-            'contact_person_name' => $data['contact_person_name']?? null,
-            'contact_person_email' => $data['contact_person_email']?? null,
-            'contact_person_phone' => $data['contact_person_phone']?? null,
+            'contact_person_name' => $data['contact_person_name'] ?? null,
+            'contact_person_email' => $data['contact_person_email'] ?? null,
+            'contact_person_phone' => $data['contact_person_phone'] ?? null,
         ]);
 
         // save flow
@@ -113,12 +111,10 @@ class AppointmentBookingController extends Controller
             'status' => $data['status'],
         ]);
 
-        $user = User::make([
-            'name' => $booking->name,
-            'email' => $booking->email,
-            'phone_number' => $booking->phone,
-        ]);
-        $user->notify(new AppointmentReviewedNotification($booking));
+
+        $guest = new Guest($booking->name, $booking->email, $booking->phone);
+        $guest->notify(new AppointmentReviewedNotification($booking, route('appointments.show',encodeId($booking->id))));
+
 
         DB::commit();
 
@@ -138,4 +134,28 @@ class AppointmentBookingController extends Controller
         $appointmentBooking->delete();
         return redirect()->back()->with('success', 'Appointment Deleted Successfully');
     }
+
+    /**
+     * @param AppointmentBooking $booking
+     * @return string
+     */
+    public function buildMessage(AppointmentBooking $booking): string
+    {
+        if (strtolower($booking->status) == strtolower(Status::Rejected)) {
+            return "Hello! " . $booking->name . ",\n\n" .
+                "Your appointment has been reviewed. Unfortunately, your appointment has been rejected.\n\n" .
+                "If you have any questions, please contact us.\n\n" .
+                "Thank you!";
+        }
+
+        return "Hello! " . $booking->name . ",\n\n" .
+            "Your appointment has been reviewed. Please check the details below:\n\n" .
+            "Date: " . $booking->date->format('d/m/Y') . "\n\n" .
+            "Contact Person: " . $booking->contact_person_name . "\n\n" .
+            "Contact Number: " . $booking->contact_person_phone . "\n\n" .
+            "Contact Email: " . $booking->contact_person_email . "\n\n" .
+            "Thank you!";
+    }
+
+
 }
