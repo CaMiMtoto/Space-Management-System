@@ -97,9 +97,16 @@ class UsersController extends Controller
         ]);
     }
 
+    /**
+     * @throws Throwable
+     */
     public function destroy(User $user)
     {
+        DB::beginTransaction();
+        $user->permissions()->detach();
+        $user->roles()->detach();
         $user->delete();
+        DB::commit();
         return response()->json([
             'message' => 'User deleted successfully',
         ]);

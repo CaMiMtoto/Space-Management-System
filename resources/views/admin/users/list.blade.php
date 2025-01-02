@@ -143,7 +143,7 @@
         </div>
     </div>
 
-{{--    Import modal--}}
+    {{--    Import modal--}}
 
     <div class="modal fade" tabindex="-1" id="importModal">
         <div class="modal-dialog modal-dialog-centered">
@@ -161,15 +161,18 @@
                     <!--end::Close-->
                 </div>
 
-                <form action="{{ route('admin.system.users.import') }}" id="importForm" method="post" enctype="multipart/form-data">
+                <form action="{{ route('admin.system.users.import') }}" id="importForm" method="post"
+                      enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
 
                         <div class="alert alert-info">
                             <p>
-                                Please download the sample file and fill in the required information. Once you have filled in the information, upload the file here.
+                                Please download the sample file and fill in the required information. Once you have
+                                filled in the information, upload the file here.
                             </p>
-                            <a href="{{ asset('assets/templates/user_template.xlsx') }}" target="_blank" class="btn btn-primary">Download Template</a>
+                            <a href="{{ asset('assets/templates/user_template.xlsx') }}" target="_blank"
+                               class="btn btn-primary">Download Template</a>
                         </div>
                         <div class="mb-3">
                             <label for="file">File</label>
@@ -202,7 +205,8 @@
                     processing: '<div class="spinner spinner-primary spinner-lg mr-15"></div> Processing...'
                 },
                 columns: [
-                    {data: 'created_at', name: 'created_at',
+                    {
+                        data: 'created_at', name: 'created_at',
                         render: function (data) {
                             return moment(data).format('DD-MM-YYYY');
                         }
@@ -232,6 +236,8 @@
                 ],
                 order: [[0, 'desc']]
             });
+
+            window.dt = myTable;
 
             $('#addBtn').click(function () {
                 $('#myModal').modal('show');

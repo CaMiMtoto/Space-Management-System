@@ -21,7 +21,7 @@
 
         {{-- Delete button --}}
         <li>
-            <a href="javascript:void(0)" data-toggle="tooltip" data-id="{{ $user->id }}" data-original-title="Delete" class="dropdown-item js-delete">
+            <a href="{{ route('admin.system.users.destroy',$user->id) }}" data-toggle="tooltip" data-id="{{ $user->id }}" data-original-title="Delete" class="dropdown-item js-delete">
                 Delete
             </a>
         </li>
