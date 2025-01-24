@@ -1,0 +1,47 @@
+{
+  "_sweetalert2-D2QaiFY2.js": {
+    "file": "assets/sweetalert2-D2QaiFY2.js",
+    "name": "sweetalert2"
+  },
+  "node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff": {
+    "file": "assets/bootstrap-icons-BOrJxbIo.woff",
+    "src": "node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff"
+  },
+  "node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2": {
+    "file": "assets/bootstrap-icons-BtvjY1KL.woff2",
+    "src": "node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-r_O87gvd.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-DVEJWCsB.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "imports": [
+      "_sweetalert2-D2QaiFY2.js"
+    ]
+  },
+  "resources/js/master.js": {
+    "file": "assets/master-DNbP6T5v.js",
+    "name": "master",
+    "src": "resources/js/master.js",
+    "isEntry": true,
+    "imports": [
+      "_sweetalert2-D2QaiFY2.js"
+    ]
+  },
+  "resources/sass/app.scss": {
+    "file": "assets/app-DTjIeXGz.css",
+    "src": "resources/sass/app.scss",
+    "isEntry": true
+  },
+  "resources/sass/master.scss": {
+    "file": "assets/master-BVqSLlAv.css",
+    "src": "resources/sass/master.scss",
+    "isEntry": true
+  }
+}
